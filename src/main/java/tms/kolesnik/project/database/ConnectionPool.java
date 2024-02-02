@@ -43,11 +43,13 @@ public class ConnectionPool {
         instantiateConnections(properties);
     }
 
-    public static Connection getConnection() {
+    public static Statement getConnection() {
         try {
-            return Objects.requireNonNull(instance.connections.poll(2, TimeUnit.SECONDS));
+            return Objects.requireNonNull(instance.connections.poll(2, TimeUnit.SECONDS)).createStatement();
         } catch (InterruptedException e) {
             return null;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 

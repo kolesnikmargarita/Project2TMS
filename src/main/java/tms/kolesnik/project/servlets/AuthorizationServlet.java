@@ -22,7 +22,7 @@ public class AuthorizationServlet extends HttpServlet {
         String email = req.getParameter("email");
         try {
             String passwordHash = Source.getHashPassword(req.getParameter("password"));
-            ResultSet accounts = ConnectionPool.getConnection().createStatement()
+            ResultSet accounts = ConnectionPool.getConnection()
                     .executeQuery("SELECT * FROM users where email='" + email + "' AND password_hash='" + passwordHash + "'");
             if(accounts.next()) {
                 if(accounts.getString("role").equals(UsersRoles.ADMIN.getRole())) {

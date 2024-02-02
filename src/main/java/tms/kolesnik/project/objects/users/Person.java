@@ -56,6 +56,6 @@ public class Person {
     public void safeAccount() throws SQLException {
         String sqlString = "INSERT INTO users (email, phone, name, role, password_hash) VALUES ('" + email + "', '" +
                 phone + "', '" + name + "', '" + role + "', '" + passwordHash + "')";
-        ConnectionPool.getConnection().createStatement().executeUpdate(sqlString);
+        ConnectionPool.getConnection().executeUpdate(sqlString);
     }
 }
