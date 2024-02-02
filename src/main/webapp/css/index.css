@@ -1,0 +1,32 @@
+.navbar{
+    background: linear-gradient(45deg, #fffffe, #fff20e);
+}
+
+.btnCart{
+    background-image: url("../img/cart.jpg");
+    width: 65px;
+    height: 52px;
+}
+
+#shopName{
+    font-family: cursive;
+    color: #bc00fa;
+    font-style: italic;
+    font-size: 75px;
+}
+
+#btnLogIn{
+    height: 55px;
+    width: 70px;
+}
+
+.card{
+    margin: 25px;
+}
+
+#mainRow {
+    width: 120%;
+}
+/*body{
+    background: linear-gradient(45deg, #a395ff, #0e3eff);
+}*/
