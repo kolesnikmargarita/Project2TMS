@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 public class ConnectionPool {
 
 
-    public static final String URL_PROPERTY_NAME = "url";
+    /*public static final String URL_PROPERTY_NAME = "url";
     public static final String USER_PROPERTY_NAME = "url";
     public static final String PASSWORD_PROPERTY_NAME = "url";
     public static final String POOL_CAPACITY_PROPERTY_NAME = "pool.size";
@@ -93,7 +93,7 @@ public class ConnectionPool {
         } catch (SQLException e) {
             throw new RuntimeException(DEFAULT_ERROR_MESSAGE);
         }
-    }
+    }*/
 
 
 
@@ -143,25 +143,25 @@ public class ConnectionPool {
 
 
 
-    /*private static Connection statement;
+    private static Statement statement;
     private static ConnectionPool instance;
 
     private ConnectionPool() throws SQLException {
         try {
             DriverManager.registerDriver(new Driver());
             Connection connection = DriverManager.getConnection(Source.DB_URL, Source.DB_USERNAME, Source.DB_PASSWORD);
-            statement = connection;
+            statement = connection.createStatement();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
     }
 
-    public static Connection getConnection() throws SQLException {
+    public static Statement getConnection() throws SQLException {
         if(instance == null) {
             instance = new ConnectionPool();
         }
         return statement;
-    }*/
+    }
 
     /*public void getData(String tableName) throws SQLException{
         statement.executeQuery("select * from" + tableName);
