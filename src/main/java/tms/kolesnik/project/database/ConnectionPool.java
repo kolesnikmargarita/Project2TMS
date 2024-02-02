@@ -3,16 +3,23 @@ package tms.kolesnik.project.database;
 import org.postgresql.Driver;
 import tms.kolesnik.project.Source;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
+import java.util.Objects;
+import java.util.Properties;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 public class ConnectionPool {
 
 
-    /*public static final String URL_PROPERTY_NAME = "url";
+    public static final String URL_PROPERTY_NAME = "url";
     public static final String USER_PROPERTY_NAME = "url";
     public static final String PASSWORD_PROPERTY_NAME = "url";
     public static final String POOL_CAPACITY_PROPERTY_NAME = "pool.size";
@@ -36,13 +43,11 @@ public class ConnectionPool {
         instantiateConnections(properties);
     }
 
-    public static Statement getConnection() {
+    public static Connection getConnection() {
         try {
-            return Objects.requireNonNull(instance.connections.poll(2, TimeUnit.SECONDS)).createStatement();
+            return Objects.requireNonNull(instance.connections.poll(2, TimeUnit.SECONDS));
         } catch (InterruptedException e) {
             return null;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
         }
     }
 
@@ -86,7 +91,7 @@ public class ConnectionPool {
         } catch (SQLException e) {
             throw new RuntimeException(DEFAULT_ERROR_MESSAGE);
         }
-    }*/
+    }
 
 
 
@@ -136,7 +141,7 @@ public class ConnectionPool {
 
 
 
-    private static Connection statement;
+    /*private static Connection statement;
     private static ConnectionPool instance;
 
     private ConnectionPool() throws SQLException {
@@ -154,7 +159,7 @@ public class ConnectionPool {
             instance = new ConnectionPool();
         }
         return statement;
-    }
+    }*/
 
     /*public void getData(String tableName) throws SQLException{
         statement.executeQuery("select * from" + tableName);
