@@ -1,4 +1,4 @@
-package tms.kolesnik.project.database;
+package tms.kolesnik.project.repository;
 
 import org.postgresql.Driver;
 import tms.kolesnik.project.Source;
@@ -9,7 +9,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.HashMap;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -19,9 +18,9 @@ import java.util.concurrent.TimeUnit;
 public class ConnectionPool {
 
 
-    /*public static final String URL_PROPERTY_NAME = "url";
-    public static final String USER_PROPERTY_NAME = "url";
-    public static final String PASSWORD_PROPERTY_NAME = "url";
+    public static final String URL_PROPERTY_NAME = "url";
+    public static final String USER_PROPERTY_NAME = "username";
+    public static final String PASSWORD_PROPERTY_NAME = "password";
     public static final String POOL_CAPACITY_PROPERTY_NAME = "pool.size";
 
     public static final String PROPERTIES_FILE_NAME = "database.properties";
@@ -43,13 +42,11 @@ public class ConnectionPool {
         instantiateConnections(properties);
     }
 
-    public static Statement getConnection() {
+    public static Connection getConnection() {
         try {
-            return Objects.requireNonNull(instance.connections.poll(2, TimeUnit.SECONDS)).createStatement();
+            return instance.connections.poll(2, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
             return null;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
         }
     }
 
@@ -90,10 +87,11 @@ public class ConnectionPool {
                         properties.getProperty(PASSWORD_PROPERTY_NAME)
                 ));
             }
+            //getConnection();
         } catch (SQLException e) {
             throw new RuntimeException(DEFAULT_ERROR_MESSAGE);
         }
-    }*/
+    }
 
 
 
@@ -141,27 +139,53 @@ public class ConnectionPool {
 
 
 
+      // SINGLETON
 
-
-    private static Statement statement;
+    /*private static Connection statement;
     private static ConnectionPool instance;
+    public static final String URL_PROPERTY_NAME = "url";
+    public static final String USER_PROPERTY_NAME = "username";
+    public static final String PASSWORD_PROPERTY_NAME = "password";
+    public static final String POOL_CAPACITY_PROPERTY_NAME = "pool.size";
+    public static final String PROPERTIES_FILE_NAME = "database.properties";
+    final Properties properties = readDatabaseConnectionProperties();
 
     private ConnectionPool() throws SQLException {
         try {
             DriverManager.registerDriver(new Driver());
-            Connection connection = DriverManager.getConnection(Source.DB_URL, Source.DB_USERNAME, Source.DB_PASSWORD);
-            statement = connection.createStatement();
+            Connection connection = DriverManager.getConnection(properties.getProperty(URL_PROPERTY_NAME), properties.getProperty(USER_PROPERTY_NAME), properties.getProperty(PASSWORD_PROPERTY_NAME));
+            //statement = connection.createStatement();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
     }
 
-    public static Statement getConnection() throws SQLException {
+    public static Connection getConnection() throws SQLException {
         if(instance == null) {
             instance = new ConnectionPool();
         }
         return statement;
     }
+
+    private Properties readDatabaseConnectionProperties() {
+        final Properties dbConnectionProperties = new Properties();
+
+        try {
+            final InputStream stream = Objects.requireNonNull(
+                    Thread.currentThread().getContextClassLoader().getResource(PROPERTIES_FILE_NAME)
+            ).openStream();
+            dbConnectionProperties.load(stream);
+        } catch (IOException e) {
+            throw new RuntimeException("error", e);
+        }
+
+        return dbConnectionProperties;
+    }*/
+
+
+
+
+
 
     /*public void getData(String tableName) throws SQLException{
         statement.executeQuery("select * from" + tableName);

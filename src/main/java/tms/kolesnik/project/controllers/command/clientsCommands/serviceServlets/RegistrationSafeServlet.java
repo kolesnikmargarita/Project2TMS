@@ -1,12 +1,12 @@
-package tms.kolesnik.project.servlets;
+package tms.kolesnik.project.controllers.command.clientsCommands.serviceServlets;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import tms.kolesnik.project.objects.users.Person;
-import tms.kolesnik.project.objects.users.UserBuilder;
+import tms.kolesnik.project.repository.users.Person;
+import tms.kolesnik.project.repository.users.UserBuilder;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;

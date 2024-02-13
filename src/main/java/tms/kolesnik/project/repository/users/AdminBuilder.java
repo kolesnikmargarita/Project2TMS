@@ -1,4 +1,4 @@
-package tms.kolesnik.project.objects.users;
+package tms.kolesnik.project.repository.users;
 
 public class AdminBuilder extends PersonBuilder{
 

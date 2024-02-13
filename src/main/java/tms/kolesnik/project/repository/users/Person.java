@@ -1,6 +1,6 @@
-package tms.kolesnik.project.objects.users;
+package tms.kolesnik.project.repository.users;
 
-import tms.kolesnik.project.database.ConnectionPool;
+import tms.kolesnik.project.repository.ConnectionPool;
 
 import java.sql.SQLException;
 
@@ -56,6 +56,6 @@ public class Person {
     public void safeAccount() throws SQLException {
         String sqlString = "INSERT INTO users (email, phone, name, role, password_hash) VALUES ('" + email + "', '" +
                 phone + "', '" + name + "', '" + role + "', '" + passwordHash + "')";
-        ConnectionPool.getConnection().executeUpdate(sqlString);
+        ConnectionPool.getConnection().createStatement().executeUpdate(sqlString);
     }
 }

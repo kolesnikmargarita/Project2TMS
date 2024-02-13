@@ -1,4 +1,4 @@
-package tms.kolesnik.project.objects.users;
+package tms.kolesnik.project.repository.users;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;

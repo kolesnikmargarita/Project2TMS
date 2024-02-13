@@ -1,4 +1,4 @@
-package tms.kolesnik.project.servlets;
+package tms.kolesnik.project.controllers.command.clientsCommands.serviceServlets;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;

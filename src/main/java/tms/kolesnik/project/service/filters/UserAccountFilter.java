@@ -1,4 +1,4 @@
-package tms.kolesnik.project.servlets.filters;
+package tms.kolesnik.project.service.filters;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;

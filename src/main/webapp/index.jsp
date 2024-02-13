@@ -1,15 +1,17 @@
-<%@ page import="tms.kolesnik.project.database.ConnectionPool" %>
+<%@ page import="tms.kolesnik.project.repository.ConnectionPool" %>
 <%@ page import="java.sql.Statement" %>
 <%@ page import="java.sql.ResultSet" %>
 <%@ page import="tms.kolesnik.project.objects.products.Product" %>
 <%@ page import="tms.kolesnik.project.objects.products.ProductBuilder" %>
 <%@ page import="java.sql.SQLException" %>
 <%@ page import="java.util.ArrayList" %>
-<%@ page import="tms.kolesnik.project.objects.users.UsersRoles" %>
-<%@ page import="tms.kolesnik.project.objects.users.Person" %>
-<%@ page import="tms.kolesnik.project.objects.users.AdminBuilder" %>
+<%@ page import="tms.kolesnik.project.repository.users.UsersRoles" %>
+<%@ page import="tms.kolesnik.project.repository.users.Person" %>
+<%@ page import="tms.kolesnik.project.repository.users.AdminBuilder" %>
 <%@ page import="java.security.NoSuchAlgorithmException" %>
 <%@ page import="java.security.spec.InvalidKeySpecException" %>
+<%@ page import="java.sql.Connection" %>
+<%@ page import="tms.kolesnik.project.repository.SystemService" %>
 <%@page contentType="text/html" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -58,10 +60,7 @@
                             <div>
                                 <input id="enter" type="submit">
                             </div>
-                        </form><%--
-                        <a href="<c:url value="/authorization"/>">
-                            <button type="button" class="btn btn-outline-info"><fmt:message key="main.logIn"/></button>
-                        </a>--%>
+                        </form>
                         <a href="<c:url value="/registrationForm"/>">
                             <button type="button" class="btn btn-outline-dark"><fmt:message key="main.registration"/></button>
                         </a>
@@ -76,39 +75,22 @@
 </nav>
 
 <%
-    ArrayList<Product> productsList = new ArrayList<>();
-    try{
-        Statement statement = ConnectionPool.getConnection();
-        ResultSet productsSet = statement.executeQuery("select * from products");
-        while (productsSet.next()) {
-            productsList.add(new ProductBuilder()
-                    .name(productsSet.getString("name"))
-                    .description(productsSet.getString("description"))
-                    .price(productsSet.getFloat("price"))
-                    .img(productsSet.getString("image"))
-                    .build());
+    ArrayList<Product> productsList = SystemService.getProductList();
+    if(SystemService.thereIsNotAdminAccount()) {
+        Person admin = null;
+        try {
+            admin = new AdminBuilder()
+                    .name(request.getServletContext().getInitParameter("adminName"))
+                    .password(request.getServletContext().getInitParameter("passwordHash"))
+                    .email(request.getServletContext().getInitParameter("adminEmail"))
+                    .phone(request.getServletContext().getInitParameter("adminPhone"))
+                    .build();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        } catch (InvalidKeySpecException e) {
+            System.out.println(e.getMessage());
         }
-        ResultSet adminAccountsSet = statement.executeQuery("select * from users where role='" + UsersRoles.ADMIN + "'");
-        if(!adminAccountsSet.next()) {
-            Person admin = null;
-            try {
-                admin = new AdminBuilder()
-                        .name(request.getServletContext().getInitParameter("adminName"))
-                        .password(request.getServletContext().getInitParameter("passwordHash"))
-                        .email(request.getServletContext().getInitParameter("adminEmail"))
-                        .phone(request.getServletContext().getInitParameter("adminPhone"))
-                        .build();
-            } catch (NoSuchAlgorithmException e) {
-                throw new RuntimeException(e);
-            } catch (InvalidKeySpecException e) {
-                System.out.println(e.getMessage());
-            }
-            statement.executeUpdate("INSERT INTO users (email, phone, name, role, password_hash) VALUES ('"
-                    + admin.getEmail() + "', '" + admin.getPhone() + "', '" + admin.getName() + "', '"
-                    + admin.getRole() + "', '" + admin.getPasswordHash() + "')");
-        }
-    } catch (SQLException e) {
-        System.out.println("ERROR");
+        SystemService.createFirstAdminAccount(admin);
     }
     request.setAttribute("products", productsList);
 %>

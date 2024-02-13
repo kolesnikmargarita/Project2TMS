@@ -1,4 +1,4 @@
-package tms.kolesnik.project.servlets;
+package tms.kolesnik.project.controllers.command.clientsCommands;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -6,8 +6,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import tms.kolesnik.project.Source;
-import tms.kolesnik.project.database.ConnectionPool;
-import tms.kolesnik.project.objects.users.UsersRoles;
+import tms.kolesnik.project.repository.SystemService;
+import tms.kolesnik.project.repository.users.UsersRoles;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
@@ -22,8 +22,7 @@ public class AuthorizationServlet extends HttpServlet {
         String email = req.getParameter("email");
         try {
             String passwordHash = Source.getHashPassword(req.getParameter("password"));
-            ResultSet accounts = ConnectionPool.getConnection()
-                    .executeQuery("SELECT * FROM users where email='" + email + "' AND password_hash='" + passwordHash + "'");
+            ResultSet accounts = SystemService.getAccount(email, passwordHash);
             if(accounts.next()) {
                 if(accounts.getString("role").equals(UsersRoles.ADMIN.getRole())) {
                     getServletContext().getRequestDispatcher("/admin").forward(req, resp);
